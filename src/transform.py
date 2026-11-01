@@ -1,4 +1,5 @@
 import pandas as pd
+from src.extract import ler_1991, ler_2000, ler_2010, ler_2022
 
 REGIOES = ["Norte", "Nordeste", "Sudeste", "Sul", "Centro-Oeste"]
 
@@ -8,13 +9,6 @@ def classificar_nivel(nome):
     if nome in REGIOES:
         return "Região"
     return "UF"
-
-def ler_2022(caminho):
-    bruto = pd.read_csv(caminho, sep=";", header=None, names=range(33), encoding="utf-8-sig")
-    dados = bruto.iloc[6:105]
-    sexo = bruto.iloc[4, 3:].ffill()
-    faixa = bruto.iloc[5, 3:]
-    return dados, sexo, faixa
 
 def transformar_2022(caminho):
     dados, sexo, faixa = ler_2022(caminho)
@@ -35,14 +29,6 @@ def transformar_2022(caminho):
     longo["nivel"] = longo["territorio"].map(classificar_nivel)
     longo = longo.drop(columns="localizacao")
     return longo
-
-def ler_2010(caminho):
-    bruto = pd.read_csv(caminho, sep=";", header=None, names=range(543), encoding="utf-8-sig")
-    dados = bruto.iloc[7:40]
-    alfabetizacao = bruto.iloc[4, 3:].ffill()
-    sexo = bruto.iloc[5, 3:].ffill()
-    faixa = bruto.iloc[6, 3:]
-    return dados, alfabetizacao, sexo, faixa
 
 def transformar_2010(caminho):
     dados, alfabetizacao, sexo, faixa = ler_2010(caminho)
@@ -83,13 +69,6 @@ def transformar_2010(caminho):
     largo["situacao"] = "Total"
     largo["nivel"] = largo["territorio"].map(classificar_nivel)
     return largo
-
-def ler_2000(caminho):
-    bruto = pd.read_csv(caminho, sep=";", header=None, names=range(12), encoding="utf-8-sig")
-    dados = bruto.iloc[6:3372]
-    situacao = bruto.iloc[4, 3:].ffill()
-    sexo = bruto.iloc[5, 3:]
-    return dados, situacao, sexo
 
 def transformar_2000(caminho):
     dados, situacao, sexo = ler_2000(caminho)
@@ -138,13 +117,6 @@ def transformar_2000(caminho):
     largo["ano"] = 2000
     largo["nivel"] = largo["territorio"].map(classificar_nivel)
     return largo
-
-def ler_1991(caminho):
-    bruto = pd.read_csv(caminho, sep=";", header=None, names=range(11), encoding="utf-8-sig")
-    dados = bruto.iloc[6:1062]
-    alfabetizacao = bruto.iloc[4, 2:].ffill()
-    situacao = bruto.iloc[5, 2:]
-    return dados, alfabetizacao, situacao
 
 def transformar_1991(caminho):
     dados, alfabetizacao, situacao = ler_1991(caminho)
