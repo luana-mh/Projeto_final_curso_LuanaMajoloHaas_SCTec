@@ -1,5 +1,14 @@
 import pandas as pd
 
+REGIOES = ["Norte", "Nordeste", "Sudeste", "Sul", "Centro-Oeste"]
+
+def classificar_nivel(nome):
+    if nome == "Brasil":
+        return "Brasil"
+    if nome in REGIOES:
+        return "Região"
+    return "UF"
+
 def ler_2022(caminho):
     bruto = pd.read_csv(caminho, sep=";", header=None, names=range(33), encoding="utf-8-sig")
     dados = bruto.iloc[6:105]
@@ -22,4 +31,7 @@ def transformar_2022(caminho):
         longo["taxa_alfabetizacao"].str.replace(",", "."), errors="coerce"
     )
     longo["taxa_analfabetismo"] = (100 - longo["taxa_alfabetizacao"]).round(2)
+    longo["ano"] = 2022
+    longo["nivel"] = longo["territorio"].map(classificar_nivel)
+    longo = longo.drop(columns="localizacao")
     return longo
