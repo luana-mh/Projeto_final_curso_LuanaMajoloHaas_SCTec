@@ -128,5 +128,5 @@ Projeto Final do curso Visualização de Dados e BI (SENAI/LAB365, Programa SCTe
 - Repositório: [github.com/luana-mh/Projeto_final_curso_LuanaMajoloHaas_SCTec](https://github.com/luana-mh/Projeto_final_curso_LuanaMajoloHaas_SCTec)
 - Aplicativo: [dcbz2yfjmvhz3buoyzwrcr.streamlit.app](https://dcbz2yfjmvhz3buoyzwrcr.streamlit.app/)
 - Repositório da turma: [Projetos/Projeto_Final_do_Curso/Luana_Majolo_Haas](https://github.com/Visualizacao-Dados-BI-T1/Projeto_ZP/tree/main/Projetos/Projeto_Final_do_Curso/Luana_Majolo_Haas)
-- Vídeo no LinkedIn: [PREENCHER]
+- Vídeo no LinkedIn: [Publicação no LinkedIn](https://lnkd.in/p/dyt47Xic)
 - Trello: dispensado pelo professor para esta entrega.
