@@ -85,3 +85,16 @@ fig_idade = px.bar(perfil, x="faixa_etaria", y="taxa_analfabetismo",
     category_orders={"faixa_etaria": faixas_idade},
     labels={"taxa_analfabetismo": "Analfabetismo (%)", "faixa_etaria": "Faixa de idade"})
 st.plotly_chart(fig_idade, width="stretch")
+
+st.subheader("Homens e mulheres ao longo dos censos")
+
+por_sexo = df[(df["territorio"] == "Brasil") & (df["situacao"] == situacao)
+              & (df["faixa_etaria"] == faixa) & (df["sexo"].isin(["Homens", "Mulheres"]))].sort_values("ano")
+
+if por_sexo.empty:
+    st.info("Não há dados por sexo para essa combinação de filtros.")
+else:
+    fig_sexo = px.line(por_sexo, x="ano", y="taxa_analfabetismo", color="sexo", markers=True,
+        labels={"taxa_analfabetismo": "Analfabetismo (%)", "ano": "Censo", "sexo": "Sexo"})
+    fig_sexo.update_xaxes(tickvals=[2000, 2010, 2022])
+    st.plotly_chart(fig_sexo, width="stretch")
