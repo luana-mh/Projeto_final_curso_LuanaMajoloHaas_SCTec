@@ -90,9 +90,7 @@ python -m streamlit run app/streamlit_app.py
 
 O segundo comando gera `data/processed/analfabetismo_censos.csv`, e o terceiro abre o aplicativo.
 
-## 11. Estrutura de pastas![Tela principal do aplicativo](docs/app_tela_principal.png)
-
-![Perfil por idade no Brasil](docs/app_perfil_idade.png)
+## 11. Estrutura de pastas
 
 ```
 analfabetismo_brasil/
