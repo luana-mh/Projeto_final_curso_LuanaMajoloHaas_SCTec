@@ -48,6 +48,15 @@ if ufs.empty or brasil.empty:
 valor = brasil["taxa_analfabetismo"].iloc[0]
 st.metric(f"Brasil, Censo {ano}", f"{valor:.2f}%".replace(".", ","))
 
+maior = ufs.loc[ufs["taxa_analfabetismo"].idxmax()]
+menor = ufs.loc[ufs["taxa_analfabetismo"].idxmin()]
+amplitude = maior["taxa_analfabetismo"] - menor["taxa_analfabetismo"]
+
+col1, col2, col3 = st.columns(3)
+col1.metric(f"Maior taxa: {maior['territorio']}", f"{maior['taxa_analfabetismo']:.2f}%".replace(".", ","))
+col2.metric(f"Menor taxa: {menor['territorio']}", f"{menor['taxa_analfabetismo']:.2f}%".replace(".", ","))
+col3.metric("Amplitude entre UFs", f"{amplitude:.2f}".replace(".", ",") + " p.p.")
+
 fig = px.bar(
     ufs.sort_values("taxa_analfabetismo"), x="taxa_analfabetismo", y="territorio", orientation="h",
     title=f"Analfabetismo por UF, Censo {ano}",
