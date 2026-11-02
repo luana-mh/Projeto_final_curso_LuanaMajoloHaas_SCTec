@@ -1,0 +1,66 @@
+from pathlib import Path
+
+import pandas as pd
+import streamlit as st
+import plotly.express as px
+
+st.set_page_config(page_title="Analfabetismo no Brasil", layout="wide")
+
+CAMINHO = Path(__file__).resolve().parent.parent / "data" / "processed" / "analfabetismo_censos.csv"
+
+@st.cache_data
+def carregar():
+    return pd.read_csv(CAMINHO)
+
+df = carregar()
+
+ORDEM_FAIXAS = ["Total", "15 a 17 anos", "18 e 19 anos", "20 a 24 anos", "25 a 34 anos",
+                "35 a 44 anos", "45 a 54 anos", "55 a 64 anos", "65 anos ou mais", "75 anos ou mais"]
+
+st.title("Analfabetismo no Brasil: Censos de 1991, 2000, 2010 e 2022")
+st.write("Fonte: IBGE, Censo Demográfico. População de 15 anos ou mais.")
+
+st.sidebar.header("Filtros")
+st.sidebar.caption("Nem todos os censos detalham todos os filtros: o de 1991 não separa por sexo e o de 2010 não separa por situação do domicílio.")
+ano = st.sidebar.selectbox("Censo", sorted(df["ano"].unique(), reverse=True))
+dados_ano = df[df["ano"] == ano]
+
+sexos = [s for s in ["Total", "Homens", "Mulheres"] if s in dados_ano["sexo"].unique()]
+situacoes = [s for s in ["Total", "Urbana", "Rural"] if s in dados_ano["situacao"].unique()]
+sexo = st.sidebar.selectbox("Sexo", sexos)
+situacao = st.sidebar.selectbox("Situação do domicílio", situacoes)
+faixa = st.sidebar.selectbox(
+    "Faixa de idade", ORDEM_FAIXAS,
+    format_func=lambda f: "15 anos ou mais (total)" if f == "Total" else f,
+)
+
+filtro = (
+    (df["ano"] == ano) & (df["sexo"] == sexo)
+    & (df["situacao"] == situacao) & (df["faixa_etaria"] == faixa)
+)
+ufs = df[filtro & (df["nivel"] == "UF")]
+brasil = df[filtro & (df["territorio"] == "Brasil")]
+
+if ufs.empty or brasil.empty:
+    st.warning("Não há dados para essa combinação de filtros.")
+    st.stop()
+
+valor = brasil["taxa_analfabetismo"].iloc[0]
+st.metric(f"Brasil, Censo {ano}", f"{valor:.2f}%".replace(".", ","))
+
+fig = px.bar(
+    ufs.sort_values("taxa_analfabetismo"), x="taxa_analfabetismo", y="territorio", orientation="h",
+    title=f"Analfabetismo por UF, Censo {ano}",
+    labels={"taxa_analfabetismo": "Analfabetismo (%)", "territorio": ""},
+)
+fig.update_layout(height=700)
+st.plotly_chart(fig, use_container_width=True)
+st.subheader("Evolução no Brasil")
+
+evolucao = df[(df["territorio"] == "Brasil") & (df["sexo"] == sexo)
+              & (df["situacao"] == situacao) & (df["faixa_etaria"] == faixa)].sort_values("ano")
+
+fig_evolucao = px.line(evolucao, x="ano", y="taxa_analfabetismo", markers=True,
+    labels={"taxa_analfabetismo": "Analfabetismo (%)", "ano": "Censo"})
+fig_evolucao.update_xaxes(tickvals=[1991, 2000, 2010, 2022])
+st.plotly_chart(fig_evolucao, use_container_width=True)
