@@ -55,7 +55,7 @@ amplitude = maior["taxa_analfabetismo"] - menor["taxa_analfabetismo"]
 col1, col2, col3 = st.columns(3)
 col1.metric(f"Maior taxa: {maior['territorio']}", f"{maior['taxa_analfabetismo']:.2f}%".replace(".", ","))
 col2.metric(f"Menor taxa: {menor['territorio']}", f"{menor['taxa_analfabetismo']:.2f}%".replace(".", ","))
-col3.metric("Amplitude entre UFs", f"{amplitude:.2f}".replace(".", ",") + " p.p.")
+col3.metric("Amplitude entre UFs", f"{amplitude:.2f} p.p.".replace(".", ","))
 
 fig = px.bar(
     ufs.sort_values("taxa_analfabetismo"), x="taxa_analfabetismo", y="territorio", orientation="h",
@@ -73,3 +73,15 @@ fig_evolucao = px.line(evolucao, x="ano", y="taxa_analfabetismo", markers=True,
     labels={"taxa_analfabetismo": "Analfabetismo (%)", "ano": "Censo"})
 fig_evolucao.update_xaxes(tickvals=[1991, 2000, 2010, 2022])
 st.plotly_chart(fig_evolucao, width="stretch")
+
+st.subheader("Perfil por idade no Brasil")
+
+faixas_idade = [f for f in ORDEM_FAIXAS if f not in ("Total", "75 anos ou mais")]
+
+perfil = df[(df["ano"] == ano) & (df["territorio"] == "Brasil") & (df["sexo"] == sexo)
+            & (df["situacao"] == situacao) & (df["faixa_etaria"].isin(faixas_idade))]
+
+fig_idade = px.bar(perfil, x="faixa_etaria", y="taxa_analfabetismo",
+    category_orders={"faixa_etaria": faixas_idade},
+    labels={"taxa_analfabetismo": "Analfabetismo (%)", "faixa_etaria": "Faixa de idade"})
+st.plotly_chart(fig_idade, width="stretch")
