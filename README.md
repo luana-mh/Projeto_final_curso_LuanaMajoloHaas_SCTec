@@ -90,7 +90,9 @@ python -m streamlit run app/streamlit_app.py
 
 O segundo comando gera `data/processed/analfabetismo_censos.csv`, e o terceiro abre o aplicativo.
 
-## 11. Estrutura de pastas
+## 11. Estrutura de pastas![Tela principal do aplicativo](docs/app_tela_principal.png)
+
+![Perfil por idade no Brasil](docs/app_perfil_idade.png)
 
 ```
 analfabetismo_brasil/
@@ -98,7 +100,7 @@ analfabetismo_brasil/
 ├── data/
 │ ├── raw/ CSVs originais do SIDRA
 │ └── processed/ tabela tratada
-├── docs/
+├── docs/ imagens do app Streamlit
 ├── notebooks/ análise exploratória
 ├── src/ extract.py, transform.py, load.py
 ├── requirements.txt
@@ -115,6 +117,10 @@ Mensagens de commit curtas, no imperativo, em português.
 ## 13. Aplicativo publicado
 
 Disponível pelo link: [dcbz2yfjmvhz3buoyzwrcr.streamlit.app](https://dcbz2yfjmvhz3buoyzwrcr.streamlit.app/)
+
+![Tela principal do aplicativo](docs/app_tela_principal.png)
+
+![Perfil por idade no Brasil](docs/app_perfil_idade.png)
 
 ## 14. Créditos e uso de IA
 
