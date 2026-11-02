@@ -98,3 +98,15 @@ else:
         labels={"taxa_analfabetismo": "Analfabetismo (%)", "ano": "Censo", "sexo": "Sexo"})
     fig_sexo.update_xaxes(tickvals=[2000, 2010, 2022])
     st.plotly_chart(fig_sexo, width="stretch")
+
+st.subheader("Como interpretar")
+st.markdown("""
+- **Taxa:**
+    - Fórmula de cálculo: Número de pessoas não alfabetizadas / total de pessoas com alfabetização informada (alfabetizadas + não alfabetizadas) x 100
+    - Critérios de inclusão: população com 15 anos ou mais pesquisada no censo do respectivo ano (1991, 2000, 2010 ou 2022)
+    - Critérios de exclusão: pessoas sem declaração de alfabetização registradas no Censo de 2010
+    - Informações adicionais: em 2022, o IBGE divulga a taxa de alfabetização. Dessa forma, para fins de cálculo, foi utilizada a fórmula: 100 - taxa de alfabetização de 2022 = taxa de analfabetismo
+- **Limites dos filtros:** devido a ausência de dados das tabelas de base, no ano de 1991 não há separação por sexo; em 2010, não há separação por situação do domicílio.
+- **Idade e gerações:** os censos não acompanham os mesmos indivíduos (os que estão na faixa de 65 anos ou mais em 2022 são um grupo diferente do que os que estão na mesma faixa em 1991). Assim, a comparação demonstra a mudança entre gerações, na qual cada censo representa a fotografia de diferentes pessoas.
+- **Hipóteses:** as explicações culturais levantadas são hipóteses, não resultados testados diretamente em dados. Para confirmação, seria necessário correlação destes dados com outras bases, como ocupação e trabalho por sexo e faixa etária.
+""")
