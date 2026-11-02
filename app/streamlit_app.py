@@ -31,8 +31,8 @@ sexo = st.sidebar.selectbox("Sexo", sexos)
 situacao = st.sidebar.selectbox("Situação do domicílio", situacoes)
 faixa = st.sidebar.selectbox(
     "Faixa de idade", ORDEM_FAIXAS,
-    format_func=lambda f: "15 anos ou mais (total)" if f == "Total" else f,
-)
+    format_func=lambda f: {"Total": "15 anos ou mais (total)",
+                           "75 anos ou mais": "75 anos ou mais (parte dos 65+)"}.get(f, f))
 
 filtro = (
     (df["ano"] == ano) & (df["sexo"] == sexo)
@@ -55,7 +55,7 @@ amplitude = maior["taxa_analfabetismo"] - menor["taxa_analfabetismo"]
 col1, col2, col3 = st.columns(3)
 col1.metric(f"Maior taxa: {maior['territorio']}", f"{maior['taxa_analfabetismo']:.2f}%".replace(".", ","))
 col2.metric(f"Menor taxa: {menor['territorio']}", f"{menor['taxa_analfabetismo']:.2f}%".replace(".", ","))
-col3.metric("Amplitude entre UFs", f"{amplitude:.2f} p.p.".replace(".", ","))
+col3.metric("Amplitude entre UFs", f"{amplitude:.2f}".replace(".", ",") + " p.p.")
 
 fig = px.bar(
     ufs.sort_values("taxa_analfabetismo"), x="taxa_analfabetismo", y="territorio", orientation="h",
@@ -108,5 +108,6 @@ st.markdown("""
     - Informações adicionais: em 2022, o IBGE divulga a taxa de alfabetização. Dessa forma, para fins de cálculo, foi utilizada a fórmula: 100 - taxa de alfabetização de 2022 = taxa de analfabetismo
 - **Limites dos filtros:** devido a ausência de dados das tabelas de base, no ano de 1991 não há separação por sexo; em 2010, não há separação por situação do domicílio.
 - **Idade e gerações:** os censos não acompanham os mesmos indivíduos (os que estão na faixa de 65 anos ou mais em 2022 são um grupo diferente do que os que estão na mesma faixa em 1991). Assim, a comparação demonstra a mudança entre gerações, na qual cada censo representa a fotografia de diferentes pessoas.
+- **Faixas de idade sobrepostas:** a faixa de 75 anos ou mais foi mantida como opção de filtro para fins de avaliação do público mais idoso, sendo uma faixa etária divulgada pelo IBGE. Entretanto, este grupo já está contido no filtro 65 anos ou mais; por isso, o grupo 75 anos ou mais não aparece no gráfico de perfil por idade, onde as barras seriam duplicadas.
 - **Hipóteses:** as explicações culturais levantadas são hipóteses, não resultados testados diretamente em dados. Para confirmação, seria necessário correlação destes dados com outras bases, como ocupação e trabalho por sexo e faixa etária.
 """)
