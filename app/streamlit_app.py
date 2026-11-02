@@ -54,7 +54,7 @@ fig = px.bar(
     labels={"taxa_analfabetismo": "Analfabetismo (%)", "territorio": ""},
 )
 fig.update_layout(height=700)
-st.plotly_chart(fig, use_container_width=True)
+st.plotly_chart(fig, width="stretch")
 st.subheader("Evolução no Brasil")
 
 evolucao = df[(df["territorio"] == "Brasil") & (df["sexo"] == sexo)
@@ -63,4 +63,4 @@ evolucao = df[(df["territorio"] == "Brasil") & (df["sexo"] == sexo)
 fig_evolucao = px.line(evolucao, x="ano", y="taxa_analfabetismo", markers=True,
     labels={"taxa_analfabetismo": "Analfabetismo (%)", "ano": "Censo"})
 fig_evolucao.update_xaxes(tickvals=[1991, 2000, 2010, 2022])
-st.plotly_chart(fig_evolucao, use_container_width=True)
+st.plotly_chart(fig_evolucao, width="stretch")
